@@ -40,3 +40,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, 100);
 });
+
+    // 3. Before/After Image Slider
+    const slider = document.getElementById('compSlider');
+    const imgBefore = document.getElementById('imgBefore');
+    if(slider && imgBefore) {
+        slider.addEventListener('input', (e) => {
+            imgBefore.style.clipPath = `polygon(0 0, ${e.target.value}% 0, ${e.target.value}% 100%, 0 100%)`;
+        });
+    }
+
+    // 4. Custom Video Player
+    const video = document.getElementById('promo-video');
+    const playBtn = document.getElementById('playBtn');
+    if (video && playBtn) {
+        playBtn.addEventListener('click', () => {
+            if (video.paused) {
+                // Remove muted attribute to hear sound if they click play
+                video.muted = false;
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        playBtn.style.opacity = '0';
+                        video.parentElement.classList.add('is-playing'); video.setAttribute('controls', 'controls');
+                    }).catch(error => { console.error("Error playing video:", error); });
+                }
+            } else {
+                video.pause();
+                playBtn.style.opacity = '1';
+                video.parentElement.classList.remove('is-playing');
+            }
+        });
+        
+        video.addEventListener('ended', () => {
+            playBtn.style.opacity = '1';
+            video.parentElement.classList.remove('is-playing');
+        });
+    }
+
+
